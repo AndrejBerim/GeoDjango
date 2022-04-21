@@ -19,15 +19,19 @@ def index(request):
     address = Search.objects.all().last()
     # address = request.POST.get('address')
     location = geocoder.osm(address)
+    print(location.osm)
+
     lat = location.lat
     lng = location.lng
     country = location.country
-    if lat == None or lng == None:
+    print(f" Longitude: {lng} - Latitude: {lat} <--> {country}")
+
+    if (lat == None) or (lng == None):
         address.delete()
         return HttpResponse('Address is not valid!')
 
     # Create map object
-    mapObj = folium.Map(location=[19, -12], zoom_start=2)
+    mapObj = folium.Map(location=[44.0, 50.0], zoom_start=2)
 
     folium.Marker([lat, lng], tooltip="Click for more", popup=country).add_to(mapObj)
     
